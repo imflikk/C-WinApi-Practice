@@ -34,7 +34,7 @@ BOOL AddSeDebugPrivileges() {
 	tokPrivs.PrivilegeCount = 1;
 	tokPrivs.Privileges[0].Luid = pDebugPriv;
 	tokPrivs.Privileges[0].Attributes = SE_PRIVILEGE_ENABLED;
-	if (!AdjustTokenPrivileges(hTok, FALSE, &tokPrivs, NULL, NULL, NULL)) {
+	if (!AdjustTokenPrivileges(hTok, FALSE, &tokPrivs, 0, NULL, NULL)) {
 		wprintf(L"AdjustTokenPrivileges()");
 		return FALSE;
 	}
