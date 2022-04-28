@@ -3,7 +3,8 @@
 #include <psapi.h>
 #include <tlhelp32.h>
 
-
+// Getting process list using CreateToolhelp32Snapshot: https://stackoverflow.com/questions/54729026/windows-enumprocesses-some-process-names-as-unknown
+// Getting token/user information: https://stackoverflow.com/questions/37002790/gettokeninformation-token-owner-and-lookupaccountsida
 int main()
 {
 
@@ -102,6 +103,8 @@ int main()
     }
 }
 
+// SeDebugPrivilege Implementation
+// https://github.com/tbhaxor/WinAPI-RedBlue/blob/main/Process%20Listing/WTS%20Api/pch.h
 BOOL AddSeDebugPrivileges() {
 	// Get the current process handle
 	DWORD dwPid = GetCurrentProcessId();
