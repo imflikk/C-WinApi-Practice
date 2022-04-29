@@ -4,6 +4,11 @@
 
 #pragma comment(lib, "netapi32.lib")
 
+// https://docs.microsoft.com/en-us/windows/win32/api/lmaccess/nf-lmaccess-netquerydisplayinformation
+
+// TO-DO
+// - Add check against each user with NetUserGetInfo() to get privilege information (admin/not admin)
+
 int GetLocalUsers()
 {
     DWORD res, i=0;
@@ -25,6 +30,8 @@ int GetLocalUsers()
         if ((res == ERROR_SUCCESS) || (res == ERROR_MORE_DATA))
         {
             p = pBuffer;
+
+            // Loop through results returned by NetQueryDisplayInformation
             for (; lpReturnedCount > 0; lpReturnedCount--)
             {
                 DWORD flags = p->usri1_flags;
@@ -38,8 +45,7 @@ int GetLocalUsers()
                     printf("%-40S\t - UserAccountFlags: %d\n", p->usri1_name, p->usri1_flags);
                 }
 
-                
-
+                // Increment to next user result
                 p++;
             }
         }
