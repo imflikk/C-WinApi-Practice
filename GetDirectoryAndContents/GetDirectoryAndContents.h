@@ -2,6 +2,8 @@
 #include <stdio.h>
 #include <assert.h>
 
+// Listing files in directory: https://docs.microsoft.com/en-us/windows/win32/fileio/listing-the-files-in-a-directory
+
 const wchar_t separator[67] = L"-----------------------------------------------------------------\n";
 
 void GetDirectory()

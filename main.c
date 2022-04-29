@@ -1,5 +1,7 @@
 #include "GetCurrentProcesses\GetCurrentProcesses.h"
 #include "GetDirectoryAndContents\GetDirectoryAndContents.h"
+#include "NetCommands\NetCommands.h"
+
 
 int main()
 {
@@ -7,6 +9,8 @@ int main()
 
     //GetDirectory();
 
-    GetDirectoryContents();
+    //GetDirectoryContents();
+
+    GetLocalUsers();
     
 }
