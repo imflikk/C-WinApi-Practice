@@ -1,6 +1,6 @@
 {
     "files.associations": {
         "getcurrentprocesses.h": "c",
-        "getdirectoryandcontents.h": "c"
+        "getdirectoryandcontents.h": "c",
     }
 }
