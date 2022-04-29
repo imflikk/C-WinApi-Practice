@@ -10,19 +10,19 @@
 int GetCurrentProcesses()
 {
 
-    wprintf(L"[*] Attempting to add SeDebugPrivilege...\n");
+    printf("[*] Attempting to add SeDebugPrivilege...\n");
     BOOL privilegeAdded = AddSeDebugPrivileges();
 
     if (!privilegeAdded)
     {
-      wprintf(L"[-] Error adding SeDebugPrivilege, continuing as unprivileged.\n");
+      printf("[-] Error adding SeDebugPrivilege, continuing as unprivileged.\n");
     }
     else {
-      wprintf(L"[+] Successfully enabled SeDebugPrivilege!\n\n");
+      printf("[+] Successfully enabled SeDebugPrivilege!\n\n");
     }
 
-    wprintf(L"%-8s\t%-38s\t%s\n", "PID", "Process Name", "Username");
-    wprintf(L"-----------------------------------------------------------------\n");
+    printf("%-8s\t%-38s\t%s\n", "PID", "Process Name", "Username");
+    printf("-----------------------------------------------------------------\n");
     HANDLE hndl = CreateToolhelp32Snapshot(TH32CS_SNAPPROCESS | TH32CS_SNAPMODULE, 0);
     HANDLE hToken;
     DWORD len = 0;
@@ -42,7 +42,7 @@ int GetCurrentProcesses()
               if (!OpenProcessToken(hProcess, TOKEN_QUERY, &hToken))
               {
                   dwError = GetLastError();
-                  wprintf(L"OpenProcessToken failed, error %d\n", dwError);
+                  printf("OpenProcessToken failed, error %d\n", dwError);
                   //return 0;
               }
 
@@ -51,7 +51,7 @@ int GetCurrentProcesses()
                   dwError = GetLastError();
                   if (dwError != ERROR_INSUFFICIENT_BUFFER) 
                   {
-                      wprintf(L"GetTokenInformation failed, error %d\n", dwError);
+                      printf("GetTokenInformation failed, error %d\n", dwError);
                       CloseHandle(hToken);
                       //return 0;
                   }
@@ -61,7 +61,7 @@ int GetCurrentProcesses()
               if (!to)
               {
                   dwError = GetLastError();
-                  wprintf(L"LocalAlloc failed, error %d\n", dwError);
+                  printf("LocalAlloc failed, error %d\n", dwError);
                   CloseHandle(hToken);
                   //return 0;
               }
@@ -69,7 +69,7 @@ int GetCurrentProcesses()
               if (!GetTokenInformation(hToken, TokenOwner, to, len, &len))
               {
                   dwError = GetLastError();
-                  wprintf(L"GetTokenInformation (2nd) failed, error %d\n", dwError);
+                  printf("GetTokenInformation (2nd) failed, error %d\n", dwError);
                   LocalFree(to);
                   CloseHandle(hToken);
                   //return 0;
@@ -84,16 +84,16 @@ int GetCurrentProcesses()
               if (!LookupAccountSidA(NULL, to->Owner, nameUser, &nameUserLen, domainName, &domainNameLen, &snu))
               {
                   dwError = GetLastError();
-                  wprintf(L"LookupAccountSid failed, error %d\n", dwError);
+                  printf("LookupAccountSid failed, error %d\n", dwError);
                   LocalFree(to);
                   CloseHandle(hToken);
                   //return 0;
               }
 
-              wprintf(L"%8d\t%-38s\t%s\n", process.th32ProcessID, process.szExeFile, nameUser);
+              printf("%8d\t%-38S\t%s\n", process.th32ProcessID, process.szExeFile, nameUser);
             }
             else {
-              wprintf(L"%8d\t%-38s\n", process.th32ProcessID, process.szExeFile);
+              printf("%8d\t%-38S\n", process.th32ProcessID, process.szExeFile);
             }
             
             
