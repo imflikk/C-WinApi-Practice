@@ -6,9 +6,6 @@
 // https://codereview.stackexchange.com/questions/46980/windows-keylogger-in-c
 // Mostly borrowed from link above
 
-// Using next link for current window text
-// https://stackoverflow.com/questions/8767248/getting-handle-of-current-window-to-getwindowtext
-
 #define VK_VOLUME_MUTE 0xAD
 #define VK_VOLUME_DOWN 0xAE
 #define VK_VOLUME_UP 0xAF
