@@ -140,6 +140,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="headers\HTTPHelpers.h" />
     <ClCompile Include="main.c" />
   </ItemGroup>
   <ItemGroup>

@@ -8,3 +8,4 @@
 #include "headers\helpers.h"
 #include "headers\Keylogger.h"
 #include "headers\NetCommands.h"
+#include "headers\HTTPHelpers.h"

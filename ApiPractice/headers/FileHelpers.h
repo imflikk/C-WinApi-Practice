@@ -27,3 +27,22 @@ char* GetFileContents(const char* fileName) {
 
 	return fileContentsBuffer;
 }
+
+void WriteToFile(const char* fileName, const char* contents) {
+	FILE* fptr;
+
+	// Open a file in write mode
+	fptr = fopen(fileName, "w");
+
+	// If file does not exist, return NULL
+	if (fptr == NULL) {
+		printf("Cannot open file \n");
+		return;
+	}
+
+	// Write contents to file
+	fprintf(fptr, "%s", contents);
+
+	// Close the file
+	fclose(fptr);
+}
