@@ -2,6 +2,7 @@
 #include <wininet.h>
 #include <urlmon.h>
 #include <stdio.h>
+#include <curl/curl.h>
 
 // Link with Urlmon.lib
 #pragma comment(lib, "urlmon.lib")
@@ -21,6 +22,37 @@ bool DownloadToFile(char* url, char* filePath) {
         printf("Failed to download file. HRESULT: 0x%lx\n", hr);
         return false;
     }
+}
+
+bool DownloadToFileWithCurl(char* url, char* filePath) {
+    // Setup curl options and download file from given URL
+    CURL* curl;
+    FILE* fp;
+    CURLcode res;
+
+    curl = curl_easy_init();
+
+    if (curl) {
+        fp = fopen(filePath, "wb");
+        curl_easy_setopt(curl, CURLOPT_URL, url);
+        curl_easy_setopt(curl, CURLOPT_WRITEDATA, fp);
+        res = curl_easy_perform(curl);
+        curl_easy_cleanup(curl);
+        fclose(fp);
+
+        if (res == CURLE_OK) {
+            printf("File downloaded successfully to %s\n", filePath);
+            return true;
+        }
+        else {
+            printf("Failed to download file. Error: %s\n", curl_easy_strerror(res));
+            return false;
+        }
+    } else {
+		printf("Failed to initialize curl\n");
+		return false;
+	}
+
 }
 
 // Reference for start: https://stackoverflow.com/questions/47486240/downloading-data-via-wininet
@@ -74,4 +106,55 @@ char* GetContentFromURL(const char* url) {
     InternetCloseHandle(hInternet);
 
     return content;
+}
+
+// Callback function to write data to a buffer
+// Reference: https://stackoverflow.com/questions/27007379/how-do-i-get-response-value-using-curl-in-c
+size_t WriteCallback(void* contents, size_t size, size_t nmemb, void* userp) {
+    size_t totalSize = size * nmemb;
+    char** contentPtr = (char**)userp;
+
+    // Reallocate memory to accommodate the new data
+    char* newContent = (char*)realloc(*contentPtr, strlen(*contentPtr) + totalSize + 1);
+    if (newContent == NULL) {
+        printf("Memory allocation failed\n");
+        return 0;
+    }
+
+    // Append the new data to the buffer
+    *contentPtr = newContent;
+    strncat(*contentPtr, (char*)contents, totalSize);
+
+    return totalSize;
+}
+
+char* GetContentFromURLWithCurl(const char* url) {
+    CURL* curl;
+    CURLcode res;
+    char* content = (char*)malloc(1); // Initial allocation
+    content[0] = '\0'; // Null-terminate the initial empty string
+
+    curl = curl_easy_init();
+
+    if (curl) {
+        curl_easy_setopt(curl, CURLOPT_URL, url);
+        curl_easy_setopt(curl, CURLOPT_WRITEFUNCTION, WriteCallback);
+        curl_easy_setopt(curl, CURLOPT_WRITEDATA, &content);
+        res = curl_easy_perform(curl);
+        curl_easy_cleanup(curl);
+
+        if (res == CURLE_OK) {
+            return content;
+        }
+        else {
+            printf("Failed to download content. Error: %s\n", curl_easy_strerror(res));
+            free(content);
+            return NULL;
+        }
+    }
+    else {
+        printf("Failed to initialize curl\n");
+        free(content);
+        return NULL;
+    }
 }

@@ -13,7 +13,9 @@ void PrintHelpMenu() {
     printf("7. Read from file\n");
     printf("8. Write to file\n");
     printf("9. Download file over HTTP\n");
-    printf("10. Get content from URL over HTTP\n");
+    printf("10. Download file with curl\n");
+    printf("11. Get content from URL over HTTP\n");
+    printf("12. Get content from URL with curl\n");
     printf(">> ");
 }
 
@@ -95,10 +97,29 @@ int main()
             DownloadToFile("http://192.168.50.193:8000/httptest", "C:\\Users\\flikk\\desktop\\httptest-file.txt");
             break;
         case 10:
+        // Download file with curl
+            DownloadToFileWithCurl("http://192.168.50.193:8000/httptest", "C:\\Users\\flikk\\desktop\\httptest-file.txt");
+        case 11:
             // Get content from URL over HTTP
             urlContent = GetContentFromURL("http://192.168.50.193:8000/httptest");
-            printf("URL content: %s", urlContent);
+            if (urlContent != NULL) {
+                printf("URL content: %s", urlContent);
+            }
+            else {
+                printf("Failed to get content from URL\n");
+            }
             break;
+        case 12:
+            // Get content from URL with curl with try/catch and print contents
+            urlContent = GetContentFromURLWithCurl("http://192.168.50.193:8000/httptest");
+            if (urlContent != NULL) {
+				printf("URL content: %s", urlContent);
+			}
+			else {
+				printf("Failed to get content from URL\n");
+			}
+			break;
+		    
         default:
             printf("Invalid option. Exiting...\n");
             return 1;
